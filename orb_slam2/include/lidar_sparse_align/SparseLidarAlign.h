@@ -15,7 +15,7 @@
 #include <Eigen/Geometry>
 #include <opencv2/opencv.hpp>
 
-#include <sophus/se3.h>
+#include <sophus/se3.hpp>
 
 #include "lidar_sparse_align/WeightFunction.h"
 #include "lidar_sparse_align/LSQNonlinear.hpp"
@@ -28,7 +28,7 @@
 
 namespace ORB_SLAM2{
 
-class SparseLidarAlign  : public LSQNonlinearGaussNewton <6, Sophus::SE3>  //LSQNonlinearGaussNewton <6, Sophus::SE3f> LSQNonlinearLevenbergMarquardt <6, Sophus::SE3f>
+class SparseLidarAlign  : public LSQNonlinearGaussNewton <6, Sophus::SE3d>
 {
     static const int patch_halfsize_ = 2;
     static const int patch_size_ = 2*patch_halfsize_;
@@ -43,20 +43,20 @@ public:
     SparseLidarAlign(const vk::PinholeCamera* pinhole_model,const ORB_SLAM2::_tracker_t& tracker_info);
     ~SparseLidarAlign();
 
-    bool semi_direct_tracking(Frame *reference, Frame *current, Sophus::SE3 &transformation);
-    bool tracking(Frame* pReference, Frame* pCurrent, Sophus::SE3& transformation);
-    bool tracking(KeyFrame* pReference, Frame* pCurrent, Sophus::SE3& transformation);
+    bool semi_direct_tracking(Frame *reference, Frame *current, Sophus::SE3d &transformation);
+    bool tracking(Frame* pReference, Frame* pCurrent, Sophus::SE3d& transformation);
+    bool tracking(KeyFrame* pReference, Frame* pCurrent, Sophus::SE3d& transformation);
 
     virtual void startIteration();
     virtual void finishIteration();
     void compute_residual_image(
-        const Sophus::SE3& transformation, 
+        const Sophus::SE3d& transformation, 
         const pcl::PointCloud<pcl::PointXYZI>::Ptr mpLidarPointCloud, 
         const int level = 0);
 
     void compute_residual_image(
         const cv::Mat& ref_img, const cv::Mat& cur_img,
-        cv::Mat& residual_img,const Sophus::SE3& Tcr, 
+        cv::Mat& residual_img,const Sophus::SE3d& Tcr, 
         const pcl::PointCloud<pcl::PointXYZI>::Ptr ref_pointclouds);
 
 private:
@@ -70,7 +70,7 @@ private:
  
     const vk::PinholeCamera* pinhole_model_;
 
-    Sophus::SE3 Tji_;
+    Sophus::SE3f Tji_;
 
     Frame* reference_;                                  // 上一帧图像
     Frame* current_;                                    
@@ -94,7 +94,7 @@ private:
     float affine_b_;
 
     void precompute_patches(cv::Mat& img, pcl::PointCloud<pcl::PointXYZI>& pointcloud, cv::Mat& patch_buf, bool is_derivative);
-    double compute_residuals(const Sophus::SE3& transformation);
+    double compute_residuals(const Sophus::SE3d& transformation);
    
     // implementation for LSQNonlinear class
     virtual void update (const ModelType &old_model, ModelType &new_model);
@@ -111,7 +111,7 @@ public:
     void max_level(int level);
 
 protected:
-    virtual double build_LinearSystem(Sophus::SE3& model);
+    virtual double build_LinearSystem(Sophus::SE3d& model);
 };
 
 }// end of namespace dedvo

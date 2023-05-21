@@ -124,7 +124,7 @@ namespace ORB_SLAM2
     {
 
         ModelType old_model = model;
-        Eigen::Matrix<float, D, D> old_H = Eigen::Matrix<float, D, D>::Identity();
+        Eigen::Matrix<double, D, D> old_H = Eigen::Matrix<double, D, D>::Identity();
 
         chi2_ = build_LinearSystem(model);
 

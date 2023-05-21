@@ -88,7 +88,7 @@ namespace g2o {
 
     //! return right hand side b of the constructed linear system
     Matrix<double, D, 1>& b() { return _b;}
-    const Matrix<double, D, 1>& b() const { return _b;}
+    const Eigen::Matrix<double, D, 1>& b() const { return _b;}
     //! return the hessian block associated with the vertex
     HessianBlockType& A() { return _hessian;}
     const HessianBlockType& A() const { return _hessian;}

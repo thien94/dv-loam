@@ -824,7 +824,7 @@ namespace ORB_SLAM2
             cv::rectangle(image_out, pt1, pt2, cv::Scalar(255, 0, 0),2);
         
             sprintf(label_name,"%s, %f",iter->label.c_str(),iter->prob);
-            cv::putText(image_out, label_name, pt1 + cv::Point2f(10,10), cv::FONT_HERSHEY_COMPLEX_SMALL, 0.7, CV_RGB(255, 0, 0), 1, CV_AA);
+            cv::putText(image_out, label_name, pt1 + cv::Point2f(10,10), cv::FONT_HERSHEY_COMPLEX_SMALL, 0.7, CV_RGB(255, 0, 0), 1, cv::LINE_AA);
         }
 
         GetSemanticObjectsPointCloud();
@@ -1411,7 +1411,7 @@ namespace ORB_SLAM2
     void Frame::ShowFeaturePoints(cv::Mat &image_out)
     {
         if(image_out.channels() == 1)
-            cv::cvtColor(image_out,image_out,CV_GRAY2BGR);
+            cv::cvtColor(image_out,image_out,cv::COLOR_GRAY2BGR);
 
         const float r = 5.0;
         for(size_t i=0;i<N;i++)
@@ -1449,7 +1449,7 @@ namespace ORB_SLAM2
         for(size_t i=0;i<mvYoloObjects.size();i++)
         {
             ObjBox_ obj_box = mvYoloObjects.at(i);
-            cv::rectangle(image_out,cv::Rect(obj_box.x, obj_box.y, obj_box.w, obj_box.h),cv::Scalar(255,0,0),2,CV_AA);
+            cv::rectangle(image_out,cv::Rect(obj_box.x, obj_box.y, obj_box.w, obj_box.h),cv::Scalar(255,0,0),2,cv::LINE_AA);
         }
 
         for(size_t i=0;i<mvKeysUn.size();i++)

@@ -49,7 +49,7 @@ namespace ORB_SLAM2
     }
 
     bool SlideWindowSparseAlign::slidewindow_optimization(const std::vector<Frame>vReferenceFrames, 
-        Frame *current, Sophus::SE3 &Tcw)
+        Frame *current, Sophus::SE3d &Tcw)
     {
         bool status = true;
 
@@ -75,7 +75,7 @@ namespace ORB_SLAM2
     void SlideWindowSparseAlign::finishIteration() {}
 
     void SlideWindowSparseAlign::compute_residual_image(
-        const Sophus::SE3 &Tcr, const pcl::PointCloud<pcl::PointXYZI>::Ptr mpLidarPointCloud,
+        const Sophus::SE3d &Tcr, const pcl::PointCloud<pcl::PointXYZI>::Ptr mpLidarPointCloud,
         const int level)
     {
         cv::Mat reference_img = reference_->level(level).clone();
@@ -84,7 +84,7 @@ namespace ORB_SLAM2
         cv::Mat residual_img = cv::Mat(reference_img.rows, reference_img.cols, CV_32F, cv::Scalar(0));
         cv::Mat residual_mask_img = reference_img.clone();
         if (residual_mask_img.channels() == 1)
-            cv::cvtColor(residual_mask_img, residual_mask_img, CV_GRAY2BGR);
+            cv::cvtColor(residual_mask_img, residual_mask_img, cv::COLOR_GRAY2BGR);
 
         const int border = patch_halfsize_ + 2 + 2;
         const int stride = reference_img.cols;
@@ -212,14 +212,14 @@ namespace ORB_SLAM2
 
     void SlideWindowSparseAlign::compute_residual_image(
         const cv::Mat &reference_img, const cv::Mat &current_img,
-        cv::Mat &residual_img, const Sophus::SE3 &Tcr,
+        cv::Mat &residual_img, const Sophus::SE3d &Tcr,
         const pcl::PointCloud<pcl::PointXYZI>::Ptr ref_pointclouds)
     {
         // cv::Mat residual_img = cv::Mat(reference_img.rows,reference_img.cols,CV_32F,cv::Scalar(0));
         residual_img = cv::Mat(reference_img.rows, reference_img.cols, CV_32F, cv::Scalar(0));
         cv::Mat residual_mask_img = reference_img.clone();
         if (residual_mask_img.channels() == 1)
-            cv::cvtColor(residual_mask_img, residual_mask_img, CV_GRAY2BGR);
+            cv::cvtColor(residual_mask_img, residual_mask_img, cv::COLOR_GRAY2BGR);
 
         const int level = 0;
         const int border = patch_halfsize_ + 2 + 2;
@@ -473,7 +473,7 @@ namespace ORB_SLAM2
         }
     }
 
-    double SlideWindowSparseAlign::compute_residuals(const Sophus::SE3 &Tcw_cur)
+    double SlideWindowSparseAlign::compute_residuals(const Sophus::SE3d &Tcw_cur)
     {
         errors_.clear();
         J_.clear();
@@ -518,8 +518,8 @@ namespace ORB_SLAM2
         cv::Mat current_img = cur_image_pyramid_[current_level_].clone();
         for(size_t i=0;i<mv_ref_frames_.size();i++)
         {
-            Sophus::SE3 Twc_ref   = Converter::toSophusSE3( mv_ref_frames_.at(i).mTcw ).inverse();
-            Sophus::SE3 T_cur_ref = Tcw_cur * Twc_ref;
+            Sophus::SE3d Twc_ref   = Converter::toSophusSE3( mv_ref_frames_.at(i).mTcw ).inverse();
+            Sophus::SE3d T_cur_ref = Tcw_cur * Twc_ref;
          
             pcl::PointCloud<pcl::PointXYZI> pointcloud_world,pointcloud_cur;
             pointcloud_ref_       = mv_ref_frames_.at(i).pointcloud();
@@ -616,15 +616,15 @@ namespace ORB_SLAM2
         Eigen::Matrix<double, 6, 1> update_;
         for (int i = 0; i < 6; i++)
             update_[i] = -x_[i];
-        // new_model = old_model * Sophus::SE3::exp(-x_);
-        new_model = Sophus::SE3::exp(update_) * old_model;
+        // new_model = old_model * Sophus::SE3d::exp(-x_);
+        new_model = Sophus::SE3d::exp(update_) * old_model;
     }
 
     void SlideWindowSparseAlign::max_level(int level) { max_level_ = level; }
 
 
 
-    double SlideWindowSparseAlign::build_LinearSystem(Sophus::SE3 &model)
+    double SlideWindowSparseAlign::build_LinearSystem(Sophus::SE3d &model)
     {
         double res = compute_residuals(model);
 

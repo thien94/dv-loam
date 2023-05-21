@@ -329,7 +329,7 @@ int main(int argc, char** argv)
     for(int ni=0;ni<nImages;ni++)
     {
         pc_full.reset(new pcl::PointCloud<PointType>());
-        imGray = cv::imread(vstrImageGray[ni],CV_LOAD_IMAGE_UNCHANGED);
+        imGray = cv::imread(vstrImageGray[ni], cv::IMREAD_UNCHANGED);
         double tframe = vTimestamps[ni];
 
         if(imGray.empty())

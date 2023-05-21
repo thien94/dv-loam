@@ -21,28 +21,35 @@ ENDIF()
 SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O3 -fsee -fomit-frame-pointer -fno-signed-zeros -fno-math-errno -funroll-loops")
 
 # Add plain cmake packages 
-FIND_PACKAGE(OpenCV REQUIRED)
+# FIND_PACKAGE(OpenCV REQUIRED)
+find_package(OpenCV 4.2)
+if(NOT OpenCV_FOUND)
+  message(FATAL_ERROR "OpenCV 4.2 not found.")
+endif()
+
 FIND_PACKAGE(Eigen REQUIRED)
 
 ##Sophus
-#FIND_PACKAGE(Sophus REQUIRED)
-#find_package(Sophus REQUIRED)
-set(Sophus_INCLUDE_DIRS /usr/local/Sophus/include)
-set(Sophus_LIBRARIES /usr/local/Sophus/lib/libSophus.so)
+# FIND_PACKAGE(Sophus REQUIRED)
+# find_package(Sophus REQUIRED)
+# set(Sophus_INCLUDE_DIRS /usr/local/Sophus/include)
+# set(Sophus_LIBRARIES /usr/local/Sophus/lib/libSophus.so)
+
 
 # Include dirs
 INCLUDE_DIRECTORIES(
   include
   ${Eigen_INCLUDE_DIRS}
   ${OpenCV_INCLUDE_DIRS}
-  ${Sophus_INCLUDE_DIRS}
+  ${PROJECT_SOURCE_DIR}/../Sophus/
+  # ${Sophus_INCLUDE_DIRS}
 )
 
 IF(USE_ROS)
   FIND_PACKAGE(catkin REQUIRED COMPONENTS roscpp cmake_modules)
   LIST(APPEND INCLUDE_DIRECTORIES ${catkin_INCLUDE_DIRS})
   catkin_package(
-    DEPENDS Eigen OpenCV Sophus
+    DEPENDS Eigen OpenCV
     CATKIN_DEPENDS roscpp
     INCLUDE_DIRS include
     LIBRARIES ${PROJECT_NAME}
@@ -68,7 +75,6 @@ LIST(APPEND SOURCEFILES src/atan_camera.cpp
 ADD_LIBRARY(${PROJECT_NAME} SHARED ${SOURCEFILES})
 TARGET_LINK_LIBRARIES(${PROJECT_NAME}
   ${OpenCV_LIBS}
-  ${Sophus_LIBRARIES}
   ${catkin_LIBRARIES})
 
 IF(USE_ROS)

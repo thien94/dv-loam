@@ -10,14 +10,14 @@ set(OpenCV_DIR "/usr/local/share/OpenCV")
 project (LidarIris)
 
 find_package(PCL 1.7 REQUIRED)
-find_package(OpenCV 3 REQUIRED)
-
 include_directories(${PCL_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
 link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
 include_directories(
     ./fftm
 )
+
+find_package(OpenCV 4.2 REQUIRED)
 
 SET(BUILD_SHARED_LIBS ON)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build)

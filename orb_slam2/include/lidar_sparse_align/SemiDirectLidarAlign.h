@@ -18,7 +18,7 @@
 #include <Eigen/Geometry>
 #include <opencv2/opencv.hpp>
 
-#include <sophus/se3.h>
+#include <sophus/se3.hpp>
 
 #include "lidar_sparse_align/WeightFunction.h"
 #include "lidar_sparse_align/LSQNonlinear.hpp"
@@ -32,7 +32,7 @@
 namespace ORB_SLAM2{
 
 // 利用匹配的图像点和直接法联合进行里程计的计算
-class SemiDirectLidarAlign : public LSQNonlinearGaussNewton <6, Sophus::SE3> {
+class SemiDirectLidarAlign : public LSQNonlinearGaussNewton <6, Sophus::SE3d> {
     static const int patch_halfsize_ = 2;
     static const int patch_size_ = 2*patch_halfsize_;
     static const int patch_area_ = patch_size_*patch_size_;
@@ -44,7 +44,7 @@ public:
     SemiDirectLidarAlign(const vk::PinholeCamera* pinhole_model,const ORB_SLAM2::_tracker_t& tracker_info);
     ~SemiDirectLidarAlign();
     
-    bool semi_direct_tracking(Frame *reference, Frame *current, std::vector<cv::DMatch>& feature_match, Sophus::SE3 &transformation);
+    bool semi_direct_tracking(Frame *reference, Frame *current, std::vector<cv::DMatch>& feature_match, Sophus::SE3d &transformation);
 
 private:
     int current_level_;
@@ -57,7 +57,7 @@ private:
  
     const vk::PinholeCamera* pinhole_model_;
 
-    Sophus::SE3 Tji_;
+    Sophus::SE3f Tji_;
 
     // 
     Frame* reference_;                                  // 上一帧图像
@@ -105,10 +105,10 @@ private:
         Eigen::Matrix<float, 2, Eigen::Dynamic, Eigen::ColMajor> &dI_buf, 
         Eigen::Matrix<float, 6, Eigen::Dynamic, Eigen::ColMajor> &jacobian_buf);
 
-    void precompute_reproject_error(const Sophus::SE3& T_cur_ref);
+    void precompute_reproject_error(const Sophus::SE3d& T_cur_ref);
 
 
-    double compute_residuals(const Sophus::SE3& transformation);
+    double compute_residuals(const Sophus::SE3d& transformation);
    
     // implementation for LSQNonlinear class
     virtual void update (const ModelType &old_model, ModelType &new_model);
@@ -133,7 +133,7 @@ public:
     void max_level(int level);
 
 protected:
-    virtual double build_LinearSystem(Sophus::SE3& model);
+    virtual double build_LinearSystem(Sophus::SE3d& model);
 };
 
 }

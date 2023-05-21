@@ -34,7 +34,7 @@
 #include "LidarIris.h"
 
 #include "Common.h"
-#include <sophus/se3.h>
+#include <sophus/se3.hpp>
 #include <vikit/pinhole_camera.h>
 
 #include <mutex>
@@ -80,7 +80,7 @@ public:
     }
 
     // 计算当前关键帧与当前帧的视角重叠率
-    float get_visible_ratio (const Sophus::SE3& T_cur_ref);
+    float get_visible_ratio (const Sophus::SE3d& T_cur_ref);
 
     //空间点对姿态的导数
     inline static void jacobian_xyz2uv(const Eigen::Vector3f& xyz_in_f, Matrix2x6& J)

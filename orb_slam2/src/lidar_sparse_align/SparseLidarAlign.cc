@@ -48,7 +48,7 @@ namespace ORB_SLAM2
         }
     }
 
-    bool SparseLidarAlign::semi_direct_tracking(Frame *reference, Frame *current, Sophus::SE3 &transformation)
+    bool SparseLidarAlign::semi_direct_tracking(Frame *reference, Frame *current, Sophus::SE3d &transformation)
     {
         bool status = true;
 
@@ -72,7 +72,7 @@ namespace ORB_SLAM2
         return status;
     }
 
-    bool SparseLidarAlign::tracking(Frame *reference, Frame *current, Sophus::SE3 &transformation)
+    bool SparseLidarAlign::tracking(Frame *reference, Frame *current, Sophus::SE3d &transformation)
     {
         bool status = true;
 
@@ -98,7 +98,7 @@ namespace ORB_SLAM2
         return status;
     }
 
-    bool SparseLidarAlign::tracking(KeyFrame *pReference, Frame *pCurrent, Sophus::SE3 &transformation)
+    bool SparseLidarAlign::tracking(KeyFrame *pReference, Frame *pCurrent, Sophus::SE3d &transformation)
     {
         bool status = true;
 
@@ -123,7 +123,7 @@ namespace ORB_SLAM2
     void SparseLidarAlign::finishIteration() {}
 
     void SparseLidarAlign::compute_residual_image(
-        const Sophus::SE3 &Tcr, const pcl::PointCloud<pcl::PointXYZI>::Ptr mpLidarPointCloud,
+        const Sophus::SE3d &Tcr, const pcl::PointCloud<pcl::PointXYZI>::Ptr mpLidarPointCloud,
         const int level)
     {
         cv::Mat reference_img = reference_->level(level).clone();
@@ -132,7 +132,7 @@ namespace ORB_SLAM2
         cv::Mat residual_img = cv::Mat(reference_img.rows, reference_img.cols, CV_32F, cv::Scalar(0));
         cv::Mat residual_mask_img = reference_img.clone();
         if (residual_mask_img.channels() == 1)
-            cv::cvtColor(residual_mask_img, residual_mask_img, CV_GRAY2BGR);
+            cv::cvtColor(residual_mask_img, residual_mask_img, cv::COLOR_GRAY2BGR);
 
         const int border = patch_halfsize_ + 2 + 2;
         const int stride = reference_img.cols;
@@ -260,14 +260,14 @@ namespace ORB_SLAM2
 
     void SparseLidarAlign::compute_residual_image(
         const cv::Mat &reference_img, const cv::Mat &current_img,
-        cv::Mat &residual_img, const Sophus::SE3 &Tcr,
+        cv::Mat &residual_img, const Sophus::SE3d &Tcr,
         const pcl::PointCloud<pcl::PointXYZI>::Ptr ref_pointclouds)
     {
         // cv::Mat residual_img = cv::Mat(reference_img.rows,reference_img.cols,CV_32F,cv::Scalar(0));
         residual_img = cv::Mat(reference_img.rows, reference_img.cols, CV_32F, cv::Scalar(0));
         cv::Mat residual_mask_img = reference_img.clone();
         if (residual_mask_img.channels() == 1)
-            cv::cvtColor(residual_mask_img, residual_mask_img, CV_GRAY2BGR);
+            cv::cvtColor(residual_mask_img, residual_mask_img, cv::COLOR_GRAY2BGR);
 
         const int level = 0;
         const int border = patch_halfsize_ + 2 + 2;
@@ -468,7 +468,7 @@ namespace ORB_SLAM2
         }
     }
 
-    double SparseLidarAlign::compute_residuals(const Sophus::SE3 &transformation)
+    double SparseLidarAlign::compute_residuals(const Sophus::SE3d &transformation)
     {
         errors_.clear();
         J_.clear();
@@ -565,13 +565,13 @@ namespace ORB_SLAM2
         Eigen::Matrix<double, 6, 1> update_;
         for (int i = 0; i < 6; i++)
             update_[i] = -x_[i];
-        // new_model = old_model * Sophus::SE3::exp(-x_);
-        new_model = old_model * Sophus::SE3::exp(update_);
+        // new_model = old_model * Sophus::SE3d::exp(-x_);
+        new_model = old_model * Sophus::SE3d::exp(update_);
     }
 
     void SparseLidarAlign::max_level(int level) { max_level_ = level; }
 
-    double SparseLidarAlign::build_LinearSystem(Sophus::SE3 &model)
+    double SparseLidarAlign::build_LinearSystem(Sophus::SE3d &model)
     {
         double res = compute_residuals(model);
 

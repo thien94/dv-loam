@@ -594,7 +594,7 @@ public:
 //只优化当前帧的pose，Marker的空间位姿固定
 struct MarkerReprojectionOnlyPose
 {
-	MarkerReprojectionOnlyPose(Sophus::SE3 posMarker, aruco::Marker &marker, vk::PinholeCamera *pCameraModel)
+	MarkerReprojectionOnlyPose(Sophus::SE3f posMarker, aruco::Marker &marker, vk::PinholeCamera *pCameraModel)
 		: posMarker_(posMarker), marker_(marker), pCameraModel_(pCameraModel)
 	{
 		d_[0] = pCameraModel_->d0();
@@ -662,7 +662,7 @@ struct MarkerReprojectionOnlyPose
 		Eigen::Matrix<T, 3, 1> t_cam_world{t[0], t[1], t[2]};
 
 		// //Marker的世界坐标系的姿态
-		Sophus::SE3 Twm = posMarker_;
+		Sophus::SE3f Twm = posMarker_;
 
 		//将世界坐标系中的marker投影到当前帧图像像空间坐标
 		float marker_size = marker_.ssize;
@@ -702,7 +702,7 @@ struct MarkerReprojectionOnlyPose
 		return true;
 	}
 
-	static ceres::CostFunction *Create(Sophus::SE3 posMarker, aruco::Marker &marker, vk::PinholeCamera *pCameraModel)
+	static ceres::CostFunction *Create(Sophus::SE3f posMarker, aruco::Marker &marker, vk::PinholeCamera *pCameraModel)
 	{
 		//误差维度，每个参数块维度
 		return (new ceres::AutoDiffCostFunction<
@@ -712,7 +712,7 @@ struct MarkerReprojectionOnlyPose
 
 	vk::PinholeCamera *pCameraModel_;
 	aruco::Marker marker_;
-	Sophus::SE3 posMarker_;
+	Sophus::SE3f posMarker_;
 
 	double d_[5] = {0};
 	double fx_, fy_, cx_, cy_;

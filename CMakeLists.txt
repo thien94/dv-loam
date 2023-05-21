@@ -34,16 +34,12 @@ dynamic_reconfigure
 message_generation
 )
 
-find_package(OpenCV 4.0 QUIET)
+find_package(OpenCV 4.2)
 if(NOT OpenCV_FOUND)
-   find_package(OpenCV 3.0 QUIET)
-   if(NOT OpenCV_FOUND)
-      find_package(OpenCV 2.4.3 QUIET)
-      if(NOT OpenCV_FOUND)
-         message(FATAL_ERROR "OpenCV > 2.4.3 not found.")
-     endif()
-   endif()
+  message(FATAL_ERROR "OpenCV 4.2 not found.")
 endif()
+MESSAGE("OPENCV VERSION:")
+MESSAGE(${OpenCV_VERSION})
 
 find_package(Eigen3 3.1.0 REQUIRED)
 
@@ -56,8 +52,8 @@ endif()
 
 ##Sophus
 #find_package(Sophus REQUIRED)
-set(Sophus_INCLUDE_DIRS /usr/local/Sophus/include)
-set(Sophus_LIBRARIES /usr/local/Sophus/lib/libSophus.so)
+# set(Sophus_INCLUDE_DIRS /usr/local/Sophus/include)
+# set(Sophus_LIBRARIES /usr/local/Sophus/lib/libSophus.so)
 
 ##VIKIT_COMMON
 set(vikit_common ${PROJECT_SOURCE_DIR}/orb_slam2/Thirdparty/vikit_common/build)
@@ -97,7 +93,7 @@ ${OpenCV_LIBS}
 ${PCL_LIBRARIES}
 ${PROJECT_SOURCE_DIR}/orb_slam2/Thirdparty/fadeRelease_v1.82/lib_ubuntu18.04_x86_64/libfade25d.so
 ${PROJECT_SOURCE_DIR}/orb_slam2/Thirdparty/LidarIris/lib/liblidar_iris.so
-${PROJECT_SOURCE_DIR}/orb_slam2/Thirdparty/fast_gicp/lib/libfast_vgicp.so
+${PROJECT_SOURCE_DIR}/orb_slam2/Thirdparty/fast_gicp/build/devel/lib/libfast_gicp.so
 ${catkin_LIBRARIES}
 )
 
@@ -122,11 +118,11 @@ ${PROJECT_SOURCE_DIR}/orb_slam2/include/depth_clustering
 ${PROJECT_SOURCE_DIR}/orb_slam2/Thirdparty/fadeRelease_v1.82
 ${PROJECT_SOURCE_DIR}/orb_slam2/Thirdparty/LidarIris
 ${PROJECT_SOURCE_DIR}/orb_slam2/Thirdparty/fast_gicp/include
+${PROJECT_SOURCE_DIR}/orb_slam2/Thirdparty/Sophus
 ${PROJECT_SOURCE_DIR}/orb_slam2/include
 ${PROJECT_SOURCE_DIR}/orb_slam2
 ${PROJECT_SOURCE_DIR}/ros/include
 ${EIGEN3_INCLUDE_DIR}
-${Sophus_INCLUDE_DIRS}
 ${vikit_common_INCLUDE_DIRS}
 ${PCL_INCLUDE_DIRS}
 ${CERES_INCLUDE_DIRS}
@@ -199,8 +195,8 @@ orb_slam2/src/odomEstimationClass.cpp
 add_dependencies (${PROJECT_NAME} g2o DBoW2)
 
 target_link_libraries(${PROJECT_NAME}
+${OpenCV_LIBS}
 ${LIBS_ORBSLAM}
-${Sophus_LIBRARIES}
 ${PCL_LIBRARIES}
 ${CERES_LIBRARIES}
 ${vikit_common_LIBRARIES}

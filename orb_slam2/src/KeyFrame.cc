@@ -136,7 +136,7 @@ cv::Mat KeyFrame::GetTranslation()
 }
 
 // 计算关键帧与当前帧的视角重叠率
-float KeyFrame::get_visible_ratio (const Sophus::SE3& T_cur_ref)
+float KeyFrame::get_visible_ratio (const Sophus::SE3d& T_cur_ref)
 {
     int patch_halfsize_  = 2;
     const int border     = patch_halfsize_+2;

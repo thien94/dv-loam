@@ -38,7 +38,7 @@
 
 #include "Common.h"
 
-#include <sophus/se3.h>
+#include <sophus/se3.hpp>
 
 namespace ORB_SLAM2
 {
@@ -66,7 +66,7 @@ public:
     static Eigen::Matrix<float, 4, 4> toMatrix4f(const cv::Mat &cvT);
     static Eigen::Matrix<double, 4, 4> toMatrix4d(const cv::Mat &cvT);
 
-    static Sophus::SE3 toSophusSE3(const cv::Mat &cvMat4);
+    static Sophus::SE3<double> toSophusSE3(const cv::Mat &cvMat4);
     
     static std::vector<float> toQuaternion(const cv::Mat &M);
 

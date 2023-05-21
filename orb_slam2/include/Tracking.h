@@ -329,8 +329,8 @@ protected:
 
     //Motion Model
     cv::Mat mVelocity;
-    Sophus::SE3 mT_cur_last;      // 上一帧到当前帧的变换
-    Sophus::SE3 mT_cur_ref;       // 关键帧到当前帧的变换
+    Sophus::SE3d mT_cur_last;      // 上一帧到当前帧的变换
+    Sophus::SE3d mT_cur_ref;       // 关键帧到当前帧的变换
 
     //Color order (true RGB, false BGR, ignored if grayscale)
     bool mbRGB;

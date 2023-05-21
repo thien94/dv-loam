@@ -26,7 +26,7 @@ namespace ORB_SLAM2
 
     // 具有深度信息的特征点，使用重投影误差
     bool SemiDirectLidarAlign::semi_direct_tracking(Frame *reference, Frame *current,
-        std::vector<cv::DMatch> &feature_match, Sophus::SE3 &transformation)
+        std::vector<cv::DMatch> &feature_match, Sophus::SE3d &transformation)
     {
         // 激光点处的patch
         ref_image_pyramid_ = reference->mvImgPyramid;
@@ -235,9 +235,9 @@ namespace ORB_SLAM2
     }
 
     // 计算重投影误差以及雅克比矩阵
-    void SemiDirectLidarAlign::precompute_reproject_error(const Sophus::SE3 &T_cur_ref)
+    void SemiDirectLidarAlign::precompute_reproject_error(const Sophus::SE3d &T_cur_ref)
     {
-        Eigen::Matrix3d R_cur_ref = T_cur_ref.rotation_matrix();
+        Eigen::Matrix3d R_cur_ref = T_cur_ref.rotationMatrix();
         Eigen::Vector3d t_cur_ref = T_cur_ref.translation();
 
         pre_weight_res_p_.resize(inlier_.size(), -1.0);
@@ -304,7 +304,7 @@ namespace ORB_SLAM2
         }
     }
 
-    double SemiDirectLidarAlign::compute_residuals(const Sophus::SE3 &T_cur_ref)
+    double SemiDirectLidarAlign::compute_residuals(const Sophus::SE3d &T_cur_ref)
     {
         errors_.clear();
         J_.clear();
@@ -460,7 +460,7 @@ namespace ORB_SLAM2
 
     void SemiDirectLidarAlign::max_level(int level) { max_level_ = level; }
 
-    double SemiDirectLidarAlign::build_LinearSystem(Sophus::SE3 &model)
+    double SemiDirectLidarAlign::build_LinearSystem(Sophus::SE3d &model)
     {
         double res = compute_residuals(model);
 
@@ -496,7 +496,7 @@ namespace ORB_SLAM2
         Eigen::Matrix<double, 6, 1> update_;
         for (int i = 0; i < 6; i++)
             update_[i] = -x_[i];
-        new_model = Sophus::SE3::exp(update_) * old_model;
+        new_model = Sophus::SE3d::exp(update_) * old_model;
     }
 
     void SemiDirectLidarAlign::removeOutliers(Eigen::Matrix4d DT)

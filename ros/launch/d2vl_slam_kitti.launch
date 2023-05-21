@@ -4,7 +4,7 @@
       type="d2vl_slam_visual_lidar" output="screen">
 
       <param name="path_to_sequence" type="string" 
-        value="/media/kinggreat24/Samsung_T5/data/kitti_data_full/odometry/unzip/data/dataset/sequences/$(arg sequence)" />
+        value="/home/thien/Datasets/KITTI/sequences/$(arg sequence)" />
       <param name="lidar_type" type="int" value="1" />
     
       <param name="publish_pointcloud" type="bool" value="true" />
@@ -24,7 +24,7 @@
       <!-- parameters -->
       <param name="setting_file_param" type="string" value="$(find d2vl_slam)/orb_slam2/config/KITTI04_12.yaml" />
 
-      <param name="gt_pose_file" type="string" value="/media/kinggreat24/Samsung_T5/data/kitti_data_full/odometry/unzip/data/dataset/poses/$(arg sequence).txt" />
+      <param name="gt_pose_file" type="string" value="/home/thien/Datasets/KITTI/poses/$(arg sequence).txt" />
       <param name="path_to_save_trajectory" type="string" value="$(find d2vl_slam)/results/KITTI/$(arg sequence)_traj.txt" />
       <param name="path_to_save_time"       type="string" value="$(find d2vl_slam)/results/KITTI/$(arg sequence)_time.txt" />
       

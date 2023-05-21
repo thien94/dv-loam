@@ -174,25 +174,27 @@ Eigen::Matrix<float, 4, 4> Converter::toMatrix4f(const cv::Mat &cvT)
 Eigen::Matrix<double, 4, 4> Converter::toMatrix4d(const cv::Mat &cvT)
 {
     Eigen::Matrix<double, 4, 4> eigMat;
-    eigMat << cvT.at<float>(0, 0), cvT.at<float>(0, 1), cvT.at<float>(0, 2), cvT.at<float>(0, 3),
-        cvT.at<float>(1, 0), cvT.at<float>(1, 1), cvT.at<float>(1, 2), cvT.at<float>(1, 3),
-        cvT.at<float>(2, 0), cvT.at<float>(2, 1), cvT.at<float>(2, 2), cvT.at<float>(2, 3),
-        cvT.at<float>(3, 0), cvT.at<float>(3, 1), cvT.at<float>(3, 2), cvT.at<float>(3, 3);
+    eigMat << cvT.at<double>(0, 0), cvT.at<double>(0, 1), cvT.at<double>(0, 2), cvT.at<double>(0, 3),
+        cvT.at<double>(1, 0), cvT.at<double>(1, 1), cvT.at<double>(1, 2), cvT.at<double>(1, 3),
+        cvT.at<double>(2, 0), cvT.at<double>(2, 1), cvT.at<double>(2, 2), cvT.at<double>(2, 3),
+        cvT.at<double>(3, 0), cvT.at<double>(3, 1), cvT.at<double>(3, 2), cvT.at<double>(3, 3);
 
     return eigMat;
 }
 
 
-Sophus::SE3 Converter::toSophusSE3(const cv::Mat &cvMat4)
+Sophus::SE3<double> Converter::toSophusSE3(const cv::Mat &cvMat4)
 {
     Eigen::Matrix<double,4,4> M;
 
-    M << cvMat4.at<float>(0,0), cvMat4.at<float>(0,1), cvMat4.at<float>(0,2),cvMat4.at<float>(0,3),
-         cvMat4.at<float>(1,0), cvMat4.at<float>(1,1), cvMat4.at<float>(1,2),cvMat4.at<float>(1,3),
-         cvMat4.at<float>(2,0), cvMat4.at<float>(2,1), cvMat4.at<float>(2,2),cvMat4.at<float>(2,3),
-         cvMat4.at<float>(3,0), cvMat4.at<float>(3,1), cvMat4.at<float>(3,2),cvMat4.at<float>(3,3);
+    M << cvMat4.at<double>(0,0), cvMat4.at<double>(0,1), cvMat4.at<double>(0,2),cvMat4.at<double>(0,3),
+         cvMat4.at<double>(1,0), cvMat4.at<double>(1,1), cvMat4.at<double>(1,2),cvMat4.at<double>(1,3),
+         cvMat4.at<double>(2,0), cvMat4.at<double>(2,1), cvMat4.at<double>(2,2),cvMat4.at<double>(2,3),
+         cvMat4.at<double>(3,0), cvMat4.at<double>(3,1), cvMat4.at<double>(3,2),cvMat4.at<double>(3,3);
+         
+    Sophus::SE3<double> se3;//(M.topLeftCorner(3,3),M.topRightCorner(3,1));
+    se3.matrix() = M;
     
-    Sophus::SE3 se3(M.topLeftCorner(3,3),M.topRightCorner(3,1));
     return se3;
 }
 

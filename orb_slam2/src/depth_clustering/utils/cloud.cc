@@ -128,7 +128,7 @@ typename pcl::PointCloud<pcl::PointXYZI>::Ptr Cloud::ToPcl(int cluster_id) const
     pcl_point.intensity = cluster_id;
     pcl_cloud.push_back(pcl_point);
   }
-  return make_shared<PclCloud>(pcl_cloud);
+  return boost::make_shared<PclCloud>(pcl_cloud);
 }
 
 typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr Cloud::ToPcl(Eigen::Vector3d rgb) const
@@ -147,7 +147,7 @@ typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr Cloud::ToPcl(Eigen::Vector3d rgb
     pcl_point.b = rgb.z();
     pcl_cloud.push_back(pcl_point);
   }
-  return make_shared<PclCloud>(pcl_cloud);
+  return boost::make_shared<PclCloud>(pcl_cloud);
 }
 
 
@@ -166,7 +166,7 @@ typename pcl::PointCloud<pcl::PointXYZL>::Ptr Cloud::ToPcl() const
     pcl_point.label = point.ring();
     pcl_cloud.push_back(pcl_point);
   }
-  return make_shared<PclCloud>(pcl_cloud);
+  return boost::make_shared<PclCloud>(pcl_cloud);
 }
 
 

@@ -259,26 +259,26 @@ namespace ORB_SLAM2
         {
             if (mbRGB)
             {
-                cvtColor(mImGray, mImGray, CV_RGB2GRAY);
-                cvtColor(imGrayRight, imGrayRight, CV_RGB2GRAY);
+                cvtColor(mImGray, mImGray, cv::COLOR_RGB2GRAY);
+                cvtColor(imGrayRight, imGrayRight, cv::COLOR_RGB2GRAY);
             }
             else
             {
-                cvtColor(mImGray, mImGray, CV_BGR2GRAY);
-                cvtColor(imGrayRight, imGrayRight, CV_BGR2GRAY);
+                cvtColor(mImGray, mImGray, cv::COLOR_BGR2GRAY);
+                cvtColor(imGrayRight, imGrayRight, cv::COLOR_BGR2GRAY);
             }
         }
         else if (mImGray.channels() == 4)
         {
             if (mbRGB)
             {
-                cvtColor(mImGray, mImGray, CV_RGBA2GRAY);
-                cvtColor(imGrayRight, imGrayRight, CV_RGBA2GRAY);
+                cvtColor(mImGray, mImGray, cv::COLOR_RGBA2GRAY);
+                cvtColor(imGrayRight, imGrayRight, cv::COLOR_RGBA2GRAY);
             }
             else
             {
-                cvtColor(mImGray, mImGray, CV_BGRA2GRAY);
-                cvtColor(imGrayRight, imGrayRight, CV_BGRA2GRAY);
+                cvtColor(mImGray, mImGray, cv::COLOR_BGRA2GRAY);
+                cvtColor(imGrayRight, imGrayRight, cv::COLOR_BGRA2GRAY);
             }
         }
 
@@ -297,16 +297,16 @@ namespace ORB_SLAM2
         if (mImGray.channels() == 3)
         {
             if (mbRGB)
-                cvtColor(mImGray, mImGray, CV_RGB2GRAY);
+                cvtColor(mImGray, mImGray, cv::COLOR_RGB2GRAY);
             else
-                cvtColor(mImGray, mImGray, CV_BGR2GRAY);
+                cvtColor(mImGray, mImGray, cv::COLOR_BGR2GRAY);
         }
         else if (mImGray.channels() == 4)
         {
             if (mbRGB)
-                cvtColor(mImGray, mImGray, CV_RGBA2GRAY);
+                cvtColor(mImGray, mImGray, cv::COLOR_RGBA2GRAY);
             else
-                cvtColor(mImGray, mImGray, CV_BGRA2GRAY);
+                cvtColor(mImGray, mImGray, cv::COLOR_BGRA2GRAY);
         }
 
         if ((fabs(mDepthMapFactor - 1.0f) > 1e-5) || imDepth.type() != CV_32F)
@@ -326,16 +326,16 @@ namespace ORB_SLAM2
         if (mImGray.channels() == 3)
         {
             if (mbRGB)
-                cvtColor(mImGray, mImGray, CV_RGB2GRAY);
+                cvtColor(mImGray, mImGray, cv::COLOR_RGB2GRAY);
             else
-                cvtColor(mImGray, mImGray, CV_BGR2GRAY);
+                cvtColor(mImGray, mImGray, cv::COLOR_BGR2GRAY);
         }
         else if (mImGray.channels() == 4)
         {
             if (mbRGB)
-                cvtColor(mImGray, mImGray, CV_RGBA2GRAY);
+                cvtColor(mImGray, mImGray, cv::COLOR_RGBA2GRAY);
             else
-                cvtColor(mImGray, mImGray, CV_BGRA2GRAY);
+                cvtColor(mImGray, mImGray, cv::COLOR_BGRA2GRAY);
         }
 
         if (mState == NOT_INITIALIZED || mState == NO_IMAGES_YET)
@@ -355,16 +355,16 @@ namespace ORB_SLAM2
         if (mImGray.channels() == 3)
         {
             if (mbRGB)
-                cvtColor(mImGray, mImGray, CV_RGB2GRAY);
+                cvtColor(mImGray, mImGray, cv::COLOR_RGB2GRAY);
             else
-                cvtColor(mImGray, mImGray, CV_BGR2GRAY);
+                cvtColor(mImGray, mImGray, cv::COLOR_BGR2GRAY);
         }
         else if (mImGray.channels() == 4)
         {
             if (mbRGB)
-                cvtColor(mImGray, mImGray, CV_RGBA2GRAY);
+                cvtColor(mImGray, mImGray, cv::COLOR_RGBA2GRAY);
             else
-                cvtColor(mImGray, mImGray, CV_BGRA2GRAY);
+                cvtColor(mImGray, mImGray, cv::COLOR_BGRA2GRAY);
         }
 
         if (mState == NOT_INITIALIZED || mState == NO_IMAGES_YET)
@@ -423,7 +423,7 @@ namespace ORB_SLAM2
             {
                 VisualLidarInitialization();
 
-                mT_cur_ref = Sophus::SE3(Eigen::Matrix3d::Identity(), Eigen::Vector3d::Zero());
+                mT_cur_ref = Sophus::SE3d(Eigen::Matrix3d::Identity(), Eigen::Vector3d::Zero());
             }
 
             std::cout<<"frame drawer begin"<<std::endl;
@@ -451,7 +451,7 @@ namespace ORB_SLAM2
                     cv::Mat Tcl_init = cv::Mat::eye(4, 4, CV_32FC1);
                     if (mVelocity.empty())
                     {
-                        mT_cur_last = Sophus::SE3(Eigen::Matrix3d::Identity(), Eigen::Vector3d::Zero());
+                        mT_cur_last = Sophus::SE3d(Eigen::Matrix3d::Identity(), Eigen::Vector3d::Zero());
                         // TrackReferenceKeyFrame();
                     }
                     else
@@ -478,7 +478,7 @@ namespace ORB_SLAM2
                     std::cout << "Direct tracking with last keyframe" << std::endl;
                     // 根据运动模型估计当前帧的位置信息，　并计算关键帧到当前帧的变换
                     if (mVelocity.empty())
-                        mT_cur_ref = Sophus::SE3(Eigen::Matrix3d::Identity(), Eigen::Vector3d::Zero());
+                        mT_cur_ref = Sophus::SE3d(Eigen::Matrix3d::Identity(), Eigen::Vector3d::Zero());
                     else
                         mT_cur_ref = Converter::toSophusSE3(mVelocity * mLastFrame.mTcw * mpLastKeyFrame->GetPoseInverse());
 
@@ -586,27 +586,27 @@ namespace ORB_SLAM2
                     {
                         auto tic_vgicp = loam::timestamp_now();
 
-                        Sophus::SE3 Tcw_cur = Converter::toSophusSE3(mCurrentFrame.mTcw);
+                        Sophus::SE3d Tcw_cur = Converter::toSophusSE3(mCurrentFrame.mTcw);
                         
                         //与当前关键帧进行优化
                         // set_color(STDOUT_FILENO, ORB_SLAM2::LBLUE);
                         // Frame refFrame = mvLocalKeyFrames.back();
-                        // Sophus::SE3 Tcw_ref = Converter::toSophusSE3(refFrame.mTcw);
-                        // Sophus::SE3 T_cur_ref = Tcw_cur * Tcw_ref.inverse();
+                        // Sophus::SE3f Tcw_ref = Converter::toSophusSE3(refFrame.mTcw);
+                        // Sophus::SE3f T_cur_ref = Tcw_cur * Tcw_ref.inverse();
                         // mpSparseLidarAlign->tracking(&refFrame, &mCurrentFrame, T_cur_ref);
-                        // Sophus::SE3 Tcw_cur_opti_ = T_cur_ref * Tcw_ref;
+                        // Sophus::SE3f Tcw_cur_opti_ = T_cur_ref * Tcw_ref;
                         // std::cout<<"Opti frame-to-keyframe Tcw_cur_opti_: "<<std::endl<<Tcw_cur_opti_.matrix()<<std::endl;
 
                         //滑动窗口优化
                         set_color(STDOUT_FILENO, ORB_SLAM2::YELLOW);
-                        Sophus::SE3 Tcw_cur_opti =  Tcw_cur;
+                        Sophus::SE3d Tcw_cur_opti =  Tcw_cur;
                         // std::cout<<"Init Tcw_cur: "<<std::endl<<Tcw_cur.matrix()<<std::endl;
                         mpSlideWindowOptimizater->slidewindow_optimization(mvLocalKeyFrames,
                             &mCurrentFrame,Tcw_cur_opti);
                         // std::cout<<"Opti Tcw_cur_opti: "<<std::endl<<Tcw_cur_opti.matrix()<<std::endl;
 
                         //判断优化的结果是否异常
-                        Sophus::SE3 diff_manifold = Tcw_cur * Tcw_cur_opti.inverse();
+                        Sophus::SE3d diff_manifold = Tcw_cur * Tcw_cur_opti.inverse();
                         if(diff_manifold.translation().norm() > 0.5)
                         {
                             std::cout<<"*********   optimization changed, use feature based optimization     **********"<<std::endl;
@@ -638,7 +638,6 @@ namespace ORB_SLAM2
             #if(USE_SCAN2MAP_OPTIMIZATION)
                 //对当前帧进行激光scan2map优化
                 auto tic_scan2map = loam::timestamp_now();
-                
                 Eigen::Matrix4d Twc_cur = Converter::toMatrix4d(mCurrentFrame.mTcw).inverse();
                 mp_sw_optimizater->updatePointsToMap(Twc_cur,mCurrentFrame.mpCornerPointsLessSharp, 
                         mCurrentFrame.mpSurfPointsLessFlat);
@@ -1046,7 +1045,7 @@ namespace ORB_SLAM2
 
             std::vector<cv::DMatch> vFilterInitMatches;
             std::vector<uchar>      m_RANSACStatus;
-            cv::Mat F12 = cv::findFundamentalMat (vPointsCurrent, vPointsRef, m_RANSACStatus, CV_FM_RANSAC, 3.0 );
+            cv::Mat F12 = cv::findFundamentalMat (vPointsCurrent, vPointsRef, m_RANSACStatus, cv::FM_RANSAC, 3.0 );
             
             std::vector<Eigen::Vector3d> x_3ds_ref;
             std::vector<cv::KeyPoint> x_2ds_cur;
@@ -1083,8 +1082,8 @@ namespace ORB_SLAM2
  
 
             //视觉激光直接法计算运动
-            // Sophus::SE3 T_cur_ref = Sophus::SE3(Eigen::Matrix3d::Identity(), Eigen::Vector3d::Zero());
-            Sophus::SE3 T_cur_ref = Converter::toSophusSE3(T_cur_ref_mat);
+            // Sophus::SE3d T_cur_ref = Sophus::SE3d(Eigen::Matrix3d::Identity(), Eigen::Vector3d::Zero());
+            Sophus::SE3d T_cur_ref = Converter::toSophusSE3(T_cur_ref_mat);
             mpSparseLidarAlign->tracking(&mInitialFrame,&mCurrentFrame,T_cur_ref);
             std::cout<<"direct tracking results: "<<std::endl<<T_cur_ref.matrix()<<std::endl;
 
@@ -1489,7 +1488,8 @@ namespace ORB_SLAM2
         // Condition 1b: 与当前关键帧的视角重叠率
         const float radio_threshold = 0.70;
         Eigen::Matrix4d T_cur_ref = Converter::toMatrix4d(mCurrentFrame.mTcw * mpLastKeyFrame->GetPoseInverse());
-        Sophus::SE3 T_cur_ref_sophus(T_cur_ref.block<3, 3>(0, 0), T_cur_ref.block<3, 1>(0, 3));
+        Sophus::SE3d T_cur_ref_sophus;//(T_cur_ref.block<3, 3>(0, 0), T_cur_ref.block<3, 1>(0, 3));
+        T_cur_ref_sophus.matrix() = T_cur_ref;
         float fov_radio = mpLastKeyFrame->get_visible_ratio(T_cur_ref_sophus);
         const bool c1b = fov_radio < radio_threshold ? true : false;
 
@@ -2253,13 +2253,13 @@ namespace ORB_SLAM2
         int nRows = imgrayLast.rows;
         cv::vconcat(imgrayLast,imgrayCur,debug_image);
         if(debug_image.channels() == 1)
-            cv::cvtColor(debug_image,debug_image,CV_GRAY2BGR);
+            cv::cvtColor(debug_image,debug_image,cv::COLOR_GRAY2BGR);
 
         for(size_t i=0;i<F_prepoint.size();i++)
         {
             cv::circle(debug_image, F_prepoint.at(i), 2.0, cv::Scalar(0, 255, 0));
             cv::circle(debug_image, F_nextpoint.at(i) + cv::Point2f(0,nRows), 2.0, cv::Scalar(255, 0, 0));
-            cv::line(debug_image,F_prepoint.at(i),F_nextpoint.at(i) + cv::Point2f(0,nRows), cv::Scalar(0, 0, 255),1,CV_AA);
+            cv::line(debug_image,F_prepoint.at(i),F_nextpoint.at(i) + cv::Point2f(0,nRows), cv::Scalar(0, 0, 255),1,cv::LINE_AA);
         }
         
     }
@@ -2303,7 +2303,7 @@ namespace ORB_SLAM2
         cur_image.copyTo(out_img.colRange(nCols, nCols * 2));
 
         if (out_img.channels() == 1)
-            cv::cvtColor(out_img, out_img, CV_GRAY2BGR);
+            cv::cvtColor(out_img, out_img, cv::COLOR_GRAY2BGR);
 
         last_image.convertTo(last_image, CV_8U, 255.0);
         cur_image.convertTo(cur_image, CV_8U, 255.0);
@@ -2417,7 +2417,7 @@ namespace ORB_SLAM2
                     //dynamic points
                     cv::circle(out_img, lastobjpts.at(i), 2.0, cv::Scalar(r, g, b));
                     cv::circle(out_img, cv::Point2f(currobjpts.at(i).x + nCols, currobjpts.at(i).y), 2.0, cv::Scalar(r, g, b));
-                    cv::line(out_img,lastobjpts.at(i),cv::Point2f(currobjpts.at(i).x + nCols, currobjpts.at(i).y),cv::Scalar(r, g, b),1,CV_AA);
+                    cv::line(out_img,lastobjpts.at(i),cv::Point2f(currobjpts.at(i).x + nCols, currobjpts.at(i).y),cv::Scalar(r, g, b),1,cv::LINE_AA);
                 }
             }
         }
@@ -2441,8 +2441,8 @@ namespace ORB_SLAM2
         std::vector<float> err;
         cv::Mat last_image = 255 * LastFrame.mvImgPyramid[0].clone();
         cv::Mat cur_image = 255 * CurrentFrame.mvImgPyramid[0].clone();
-        cv::cvtColor(last_image, last_image, CV_GRAY2BGR);
-        cv::cvtColor(cur_image, cur_image, CV_GRAY2BGR);
+        cv::cvtColor(last_image, last_image, cv::COLOR_GRAY2BGR);
+        cv::cvtColor(cur_image, cur_image, cv::COLOR_GRAY2BGR);
         cv::calcOpticalFlowPyrLK(last_image, cur_image, lastobjpts, currobjpts, status, err, cv::Size(21, 21), 3);
 
         for (size_t i = 0; i < status.size(); i++)
@@ -2465,7 +2465,7 @@ namespace ORB_SLAM2
 
         cv::vconcat(image1,image2,out_img);
         if (out_img.channels() == 1)
-            cv::cvtColor(out_img, out_img, CV_GRAY2BGR);
+            cv::cvtColor(out_img, out_img, cv::COLOR_GRAY2BGR);
 
         for (size_t i = 0; i < matches.size(); i++)
         {
@@ -2479,7 +2479,7 @@ namespace ORB_SLAM2
             cv::circle(out_img, pt_1, 2, cv::Scalar(255, 0, 0), -1);
             cv::circle(out_img, pt_2 + cv::Point2f(0, nRows), 2, cv::Scalar(255, 0, 0), -1);
             
-            cv::line(out_img, pt_1, pt_2 + cv::Point2f(0, nRows), cv::Scalar(0, 255, 0), 1, CV_AA);
+            cv::line(out_img, pt_1, pt_2 + cv::Point2f(0, nRows), cv::Scalar(0, 255, 0), 1, cv::LINE_AA);
         }
     }
 
@@ -2498,7 +2498,7 @@ namespace ORB_SLAM2
         image2.copyTo(out_img.colRange(nCols, nCols * 2));
 
         if (out_img.channels() == 1)
-            cv::cvtColor(out_img, out_img, CV_GRAY2BGR);
+            cv::cvtColor(out_img, out_img, cv::COLOR_GRAY2BGR);
 
         ORBmatcher orb_matcher;
 
@@ -2508,7 +2508,7 @@ namespace ORB_SLAM2
             ObjBox_ obj_box = frame1.mvYoloObjects.at(i);
             if (obj_box.Class > 7)
                 continue;
-            cv::rectangle(out_img, cv::Rect(obj_box.x, obj_box.y, obj_box.w, obj_box.h), cv::Scalar(255, 0, 0), 2, CV_AA);
+            cv::rectangle(out_img, cv::Rect(obj_box.x, obj_box.y, obj_box.w, obj_box.h), cv::Scalar(255, 0, 0), 2, cv::LINE_AA);
         }
 
         for (size_t i = 0; i < frame2.mvYoloObjects.size(); i++)
@@ -2516,7 +2516,7 @@ namespace ORB_SLAM2
             ObjBox_ obj_box = frame2.mvYoloObjects.at(i);
             if (obj_box.Class > 7)
                 continue;
-            cv::rectangle(out_img, cv::Rect(obj_box.x + nCols, obj_box.y, obj_box.w, obj_box.h), cv::Scalar(255, 0, 0), 2, CV_AA);
+            cv::rectangle(out_img, cv::Rect(obj_box.x + nCols, obj_box.y, obj_box.w, obj_box.h), cv::Scalar(255, 0, 0), 2, cv::LINE_AA);
         }
 
         //计算基础矩阵
@@ -2545,7 +2545,7 @@ namespace ORB_SLAM2
                     cv::circle(out_img, pt_1.pt, 2, cv::Scalar(255, 0, 0), -1);
                     cv::circle(out_img, cv::Point2f(pt_2.pt.x + nCols, pt_2.pt.y), 2, cv::Scalar(255, 0, 0), -1);
 
-                    cv::line(out_img, pt_1.pt, cv::Point2f(pt_2.pt.x + nCols, pt_2.pt.y), cv::Scalar(0, 255, 0), 1, CV_AA);
+                    cv::line(out_img, pt_1.pt, cv::Point2f(pt_2.pt.x + nCols, pt_2.pt.y), cv::Scalar(0, 255, 0), 1, cv::LINE_AA);
                 }
                 else
                 {

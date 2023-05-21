@@ -5,8 +5,7 @@
 #include <iostream>
 #include <Eigen/Core>
 
-// #include <sophus/se3.hpp>
-#include "sophus/se3.h"
+#include <sophus/se3.hpp>
 #include "lidar_sparse_align/WeightFunction.h"
 
 namespace ORB_SLAM2

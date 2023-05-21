@@ -167,7 +167,7 @@ void SWOdomEstimationClass::addEdgeCostFactor(const pcl::PointCloud<pcl::PointXY
     }
     if (corner_num < 20)
     {
-        printf("not enough correct points");
+        printf("not enough correct points 1\n");
     }
 
     // std::cout << "corner_measurements: " << corner_num << std::endl;
@@ -224,7 +224,7 @@ void SWOdomEstimationClass::addSurfCostFactor(const pcl::PointCloud<pcl::PointXY
     }
     if (surf_num < 20)
     {
-        printf("not enough correct points");
+        printf("not enough correct points 2\n");
     }
 
     // std::cout << "surf_measurements: " << surf_num << std::endl;

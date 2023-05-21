@@ -5,6 +5,7 @@
 #include <list>
 #include <memory>
 #include <thread>
+#include <boost/thread/thread.hpp>
 
 namespace linefit_ground_segmentation
 {

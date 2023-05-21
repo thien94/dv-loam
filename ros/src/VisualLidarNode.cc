@@ -143,7 +143,7 @@ void VisualLidarNode::start()
         {
             // read images
             ROS_INFO("********         Tracking frame %d       ***********",ni);
-            imGray = cv::imread(vstrImageGray[ni], CV_LOAD_IMAGE_UNCHANGED);
+            imGray = cv::imread(vstrImageGray[ni], cv::IMREAD_UNCHANGED);
             if(imGray.empty())
             {
                 cerr << endl << "Failed to load image at: "
